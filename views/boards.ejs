@@ -1,0 +1,47 @@
+    <!DOCTYPE html>
+    <html lang="ko">
+
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <link rel="stylesheet" href="./css/board.css">
+    </head>
+
+    <body>
+      <h1>게시판</h1>
+      <h2>총 게시글 수: <%= postCounts %></h2>
+      <a class="btn btn--write" href="/boards/posts/write">글쓰기</a>
+      <ul class="post_container">
+        <% if(postCounts > 0) { %>
+        <% for (let i = 0; i < postCounts; i++) { %>
+        <li class="post">
+          <span class="title"><%= POST[i].title %></span>
+          <div class="content"><%= POST[i].content %></div>
+          <div class="btn_container">
+            <a class="btn btn--modify" href="/boards/modify/<%= POST[i].title %>">수정</a>
+            <a class="btn btn--delete" href="/boards" onclick="deletePost('<%= POST[i].title %>');">삭제</a>
+          </div>
+        </li>
+        <% } %>
+        <% } else { %>
+        <li>포스트가 없습니다.</li>
+        <% } %>
+      </ul>
+    </body>
+
+    <script>
+      function deletePost(title) {
+        fetch(`http://localhost:4000/boards/${title}`, {
+          method: 'delete',
+          headers: {
+            'Content-type': 'application/json'
+          },
+        }).then((res) => {
+          console.log(res);
+        })
+      }
+    </script>
+
+    </html>
